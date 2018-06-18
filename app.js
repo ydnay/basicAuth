@@ -9,9 +9,9 @@ const mongoose     = require("mongoose");
 const app          = express();
 const favicon      = require('serve-favicon');
 const hbs          = require('hbs');
-
-// Routes
-const authRoutes = require('./routes/auth-routes');
+const Recaptcha = require('express-recaptcha').Recaptcha;
+//import Recaptcha from 'express-recaptcha'
+const recaptcha = new Recaptcha('SITE_KEY', 'SECRET_KEY');
 
 mongoose.Promise = Promise;
 mongoose
@@ -48,9 +48,10 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 // default value for title local
 app.locals.title = 'Express - Generated with IronGenerator';
 
-// const index = require('./routes/index');
-
-// const authRoutes = require('./routes/auth-routes');
+// Routes
+const authRoutes = require('./routes/auth-routes');
 app.use('/', authRoutes);
+const index = require('./routes/index');
+app.use('/', index);
 
 module.exports = app;

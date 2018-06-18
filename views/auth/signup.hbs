@@ -17,6 +17,9 @@
     <input type="password" name="password"
       placeholder="DeathStar">
     <br><br>
+    {{#if errorMessage}}
+      <div class="error-message">{{ errorMessage }}</div>
+    {{/if}}
     <button>Create account</button>
   </form>
 </body>
