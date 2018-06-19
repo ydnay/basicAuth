@@ -12,6 +12,8 @@ const hbs          = require('hbs');
 const Recaptcha = require('express-recaptcha').Recaptcha;
 //import Recaptcha from 'express-recaptcha'
 const recaptcha = new Recaptcha('SITE_KEY', 'SECRET_KEY');
+const session    = require("express-session");
+const MongoStore = require("connect-mongo")(session);
 
 mongoose.Promise = Promise;
 mongoose
@@ -32,6 +34,15 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(session({
+  secret: "basic-auth-secret",
+  cookie: { maxAge: 60000 },
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection,
+    ttl: 24 * 60 * 60 // 1 day
+  })
+}));
 
 // Express View engine setup
 app.use(require('node-sass-middleware')({
